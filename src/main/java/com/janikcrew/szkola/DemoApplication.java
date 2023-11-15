@@ -24,6 +24,7 @@ public class DemoApplication {
 			Admin admin = new Admin("68111094029", "Marek", "Idzik", "marekidzik@gmail.com", LocalDate.parse("1968-11-10", formatter));
 			admin.setRola("ROLE_ADMIN");
 			osobaDAO.save(admin);
+			//Zmiana1
 		};
 	}
 
