@@ -5,16 +5,20 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity
-@Table(name="osoba")
+
+
+@Entity(name="osoba")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="osoba_type", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class Osoba {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name="id_budzetu")
-    private int idBudzetu;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="id_budzetu")
+    private Budzet budzet;
 
     @Column(name="pesel")
     private String pesel;
@@ -54,12 +58,12 @@ public abstract class Osoba {
         this.id = id;
     }
 
-    public int getIdBudzetu() {
-        return idBudzetu;
+    public Budzet getBudzet() {
+        return budzet;
     }
 
-    public void setIdBudzetu(int idBudzetu) {
-        this.idBudzetu = idBudzetu;
+    public void setBudzet(Budzet budzet) {
+        this.budzet = budzet;
     }
 
     public String getPesel() {
@@ -114,7 +118,7 @@ public abstract class Osoba {
     public String toString() {
         return "Osoba{" +
                 "id=" + id +
-                ", idBudzetu=" + idBudzetu +
+                ", budzetu=" + budzet +
                 ", pesel=" + pesel +
                 ", imie='" + imie + '\'' +
                 ", nazwisko='" + nazwisko + '\'' +
