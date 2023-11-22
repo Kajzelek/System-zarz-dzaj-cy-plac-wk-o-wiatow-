@@ -1,5 +1,6 @@
 package com.janikcrew.szkola.entity;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -7,7 +8,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name="osoba")
+@DiscriminatorValue("ADMIN")
 public class Admin extends Osoba {
     public Admin() {
     }

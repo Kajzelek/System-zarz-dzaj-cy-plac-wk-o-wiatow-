@@ -24,8 +24,9 @@ public class OsobaDAOImpl implements OsobaDAO {
 
     @Override
     @Transactional
-    public void save(Budzet budzet) {
-        entityManager.persist(budzet);
+    public void deleteBudzetById(int id) {
+        Budzet budzet = entityManager.find(Budzet.class, id);
+        entityManager.remove(budzet);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity(name="osoba")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="osoba_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name="rola", discriminatorType = DiscriminatorType.STRING)
 public abstract class Osoba {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,6 @@ public abstract class Osoba {
 
     @Column(name="data_uro")
     private LocalDate dataUrodzenia;
-
-    @Column(name="rola")
-    private String rola;
 
     public Osoba() {
 
@@ -106,14 +103,6 @@ public abstract class Osoba {
         this.dataUrodzenia = dataUrodzenia;
     }
 
-    public String getRola() {
-        return rola;
-    }
-
-    public void setRola(String rola) {
-        this.rola = rola;
-    }
-
     @Override
     public String toString() {
         return "Osoba{" +
@@ -124,7 +113,6 @@ public abstract class Osoba {
                 ", nazwisko='" + nazwisko + '\'' +
                 ", email='" + email + '\'' +
                 ", dataUrodzenia=" + dataUrodzenia +
-                ", rola='" + rola + '\'' +
                 '}';
     }
 }

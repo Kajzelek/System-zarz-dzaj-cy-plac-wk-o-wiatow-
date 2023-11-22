@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name="osoba")
+@DiscriminatorValue("UCZEN")
 public class Uczen extends Osoba {
 
     @Column(name="nazwa_klasy")

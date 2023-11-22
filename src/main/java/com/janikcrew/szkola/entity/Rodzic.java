@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name="osoba")
+@DiscriminatorValue("RODZIC")
 public class Rodzic extends Osoba {
 
     @OneToOne(cascade = CascadeType.ALL)

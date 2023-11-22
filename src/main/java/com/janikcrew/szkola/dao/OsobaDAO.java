@@ -5,7 +5,8 @@ import com.janikcrew.szkola.entity.Osoba;
 
 public interface OsobaDAO {
     void save(Osoba osoba);
-    void save(Budzet budzet);
+
+    void deleteBudzetById(int id);
     Osoba findOsobaById(int id);
 
 }
