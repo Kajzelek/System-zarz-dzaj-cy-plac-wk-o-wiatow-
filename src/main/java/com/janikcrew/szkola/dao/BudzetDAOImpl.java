@@ -34,6 +34,11 @@ public class BudzetDAOImpl implements BudzetDAO {
     }
 
     @Override
+    public Transakcja findTransakcjaById(int id) {
+        return entityManager.find(Transakcja.class, id);
+    }
+
+    @Override
     @Transactional
     public void save(Budzet budzet) {
         entityManager.persist(budzet);
@@ -49,5 +54,31 @@ public class BudzetDAOImpl implements BudzetDAO {
     @Transactional
     public void update(Budzet budzet) {
         entityManager.merge(budzet);
+    }
+
+    @Override
+    @Transactional
+    public void update(Transakcja transakcja) {
+        entityManager.merge(transakcja);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTransactionById(int id) {
+        Transakcja transakcja = entityManager.find(Transakcja.class, id);
+        entityManager.remove(transakcja);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBudzetById(int id) {
+        Budzet budzet = entityManager.find(Budzet.class, id);
+        entityManager.remove(budzet);
+    }
+
+    @Override
+    @Transactional
+    public void refresh(Budzet budzet) {
+        entityManager.refresh(budzet);
     }
 }

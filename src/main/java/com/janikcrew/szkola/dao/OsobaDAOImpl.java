@@ -24,13 +24,19 @@ public class OsobaDAOImpl implements OsobaDAO {
 
     @Override
     @Transactional
-    public void deleteBudzetById(int id) {
-        Budzet budzet = entityManager.find(Budzet.class, id);
-        entityManager.remove(budzet);
+    public void update(Osoba osoba) {
+        entityManager.merge(osoba);
     }
 
     @Override
     public Osoba findOsobaById(int id) {
         return entityManager.find(Osoba.class, id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOsobaById(int id) {
+        Osoba osoba = entityManager.find(Osoba.class, id);
+        entityManager.remove(osoba);
     }
 }

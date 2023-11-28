@@ -16,7 +16,7 @@ public class Budzet {
     @Column(name="budżet")
     private double budzet;
 
-    @OneToMany(mappedBy = "budzet", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "budzet", fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Transakcja> listaTransakcji;
 
     public Budzet() {
@@ -29,20 +29,7 @@ public class Budzet {
         this.budzet = budzet;
     }
     public void dodajTransakcje(Transakcja transakcja) throws Exception {
-        if (transakcja.getRodzaj().equals("WYDATEK")) {
-            if (transakcja.getKwota() <= budzet) {
-                budzet -= transakcja.getKwota();
-                System.out.println("Transakcja typu WYDATEK w wysokości: " + transakcja.getKwota());
-            }
-            else {
-                throw new Exception("Brak odpowiednich środków na koncie! ");
-            }
-        }
-        else {
-            budzet += transakcja.getKwota();
-            System.out.println("Transakcja typu PRZYCHÓD w wysokości: " + transakcja.getKwota());
-        }
-        listaTransakcji.add(transakcja);
+
     }
 
     public int getId() {

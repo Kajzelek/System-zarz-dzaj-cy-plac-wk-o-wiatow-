@@ -9,43 +9,51 @@ import java.util.Date;
 @DiscriminatorValue("UCZEN")
 public class Uczen extends Osoba {
 
-    @Column(name="nazwa_klasy")
-    private String nazwaKlasy;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name="nazwa_klasy")
+    private Klasa klasa;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="id_rodzica")
     private Rodzic rodzic;
 
     public Uczen() {
 
     }
-
-    public Uczen(String pesel, String imie, String nazwisko, String email, LocalDate dataUrodzenia, String nazwaKlasy, Rodzic rodzic) {
+    public Uczen(String pesel, String imie, String nazwisko, String email, LocalDate dataUrodzenia) {
         super(pesel, imie, nazwisko, email, dataUrodzenia);
-        this.nazwaKlasy = nazwaKlasy;
+    }
+    public Uczen(String pesel, String imie, String nazwisko, String email, LocalDate dataUrodzenia, Klasa klasa) {
+        super(pesel, imie, nazwisko, email, dataUrodzenia);
+        this.klasa = klasa;
+    }
+
+    public Uczen(String pesel, String imie, String nazwisko, String email, LocalDate dataUrodzenia, Klasa klasa, Rodzic rodzic) {
+        super(pesel, imie, nazwisko, email, dataUrodzenia);
+        this.klasa = klasa;
         this.rodzic = rodzic;
     }
 
-    public String getNazwaKlasy() {
-        return nazwaKlasy;
+    public Klasa getKlasa() {
+        return klasa;
     }
 
-    public void setNazwaKlasy(String nazwaKlasy) {
-        this.nazwaKlasy = nazwaKlasy;
+    public void setKlasa(Klasa klasa) {
+        this.klasa = klasa;
     }
 
     public Rodzic getRodzic() {
         return rodzic;
     }
 
-    public void setRodzica(Rodzic rodzic) {
+    public void setRodzic(Rodzic rodzic) {
         this.rodzic = rodzic;
     }
 
     @Override
     public String toString() {
         return "Uczen{" +
-                "nazwaKlasy='" + nazwaKlasy + '\'' +
+                "klasa='" + klasa + '\'' +
                 ", rodzic=" + rodzic +
                 '}';
     }

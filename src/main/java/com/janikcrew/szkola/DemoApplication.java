@@ -2,17 +2,23 @@ package com.janikcrew.szkola;
 
 import com.janikcrew.szkola.dao.BudzetDAO;
 import com.janikcrew.szkola.dao.BudzetDAOImpl;
+import com.janikcrew.szkola.dao.KlasaDAO;
 import com.janikcrew.szkola.dao.OsobaDAO;
-import com.janikcrew.szkola.entity.Admin;
-import com.janikcrew.szkola.entity.Budzet;
-import com.janikcrew.szkola.entity.Transakcja;
+import com.janikcrew.szkola.entity.*;
 import com.janikcrew.szkola.service.BudzetService;
+import com.janikcrew.szkola.service.KlasaService;
+import com.janikcrew.szkola.service.OsobaService;
+import com.janikcrew.szkola.service.PrzedmiotService;
+import jakarta.persistence.EntityManager;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -25,28 +31,95 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 	@Bean
-	public CommandLineRunner commandLineRunner(BudzetService budzetService, BudzetDAO budzetDAO) {
+	public CommandLineRunner commandLineRunner(BudzetService budzetService, OsobaService osobaService, KlasaService klasaService, PrzedmiotService przedmiotService) {
 		return runner -> {
-			testTransakcji(budzetService, budzetDAO);
-			//testUsunieciaTransakcji(budzetService);
-
-
-			//Zmiana1
+			//utworzOsobe(osobaService);
+			//testTransakcji(budzetService);
+			//testUtworzeniaNauczyciela(budzetService, osobaService);
+			//testUtworzeniaKlasy(osobaService, klasaService);
+			//testUtworzeniaUcznia(osobaService, klasaService);
+			//testDodaniaUczniaDoKlasy(klasaService, osobaService);
+			testUtworzeniaPrzedmiotu(przedmiotService, klasaService, osobaService);
+			//testUsunieciaPrzedmiotu(przedmiotService);
+			//testDzialaniaKlasy(przedmiotService, osobaService, klasaService);
 		};
 	}
 
-	private void testUsunieciaTransakcji(OsobaDAO osobaDAO, BudzetDAO budzetDAO) {
+	private void testUsunieciaPrzedmiotu(PrzedmiotService przedmiotService) {
+		int id = 19;
+		przedmiotService.deletePrzedmiotById(id);
 	}
 
-	public void testTransakcji(BudzetService budzetService, BudzetDAO budzetDAO) throws Exception {
+	private void testDzialaniaKlasy(PrzedmiotService przedmiotService, OsobaService osobaService, KlasaService klasaService) {
+		Klasa klasa = klasaService.findKlasaByName("1a");
+		for(Przedmiot przedmiot : klasa.getListaPrzedmiotow()) {
+			System.out.println(przedmiot.getNazwa());
+		}
+	}
+
+
+	private void testUtworzeniaPrzedmiotu(PrzedmiotService przedmiotService, KlasaService klasaService, OsobaService osobaService) {
+		Przedmiot przedmiot = new Przedmiot("gejowanie");
+		String nazwaKlasy = "1a";
+		int idNauczyciela = 7;
+		Klasa klasa = klasaService.findKlasaByName(nazwaKlasy);
+		Nauczyciel nauczyciel = (Nauczyciel) osobaService.findOsobaById(idNauczyciela);
+
+		przedmiotService.dodajPrzedmiot(przedmiot, nauczyciel, klasa);
+
+	}
+	private void testDodaniaUczniaDoKlasy(KlasaService klasaService, OsobaService osobaService) {
+		int id = 3;
+		int id1 = 6;
+		String name = "1a";
+		Klasa klasa = klasaService.findKlasaByName(name);
+		Uczen uczen = (Uczen) osobaService.findOsobaById(id);
+		Uczen uczen1 = (Uczen) osobaService.findOsobaById(id1);
+		klasaService.dodajUcznia(klasa, uczen, uczen1);
+
+
+	}
+	private void utworzOsobe(OsobaService osobaService) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		Uczen uczen = new Uczen("02256745432", "Kacper", "Łukawski", "klukawski45@gmail.com", LocalDate.parse("2002-12-12"));
+		Rodzic rodzic = new Rodzic("694785655678", "Maria", "Łukawska", "gorzowianka32@onet.pl", LocalDate.parse("1969-04-24", formatter));
+		osobaService.dodajRodzicaUcznia(rodzic, uczen);
+	}
+
+	private void testUtworzeniaUcznia(OsobaService osobaService, KlasaService klasaService) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		Uczen uczen = new Uczen("01151945459", "Patryk", "Cygnar", "cygi123@cyg.pl", LocalDate.parse("2001-05-19", formatter));
+		Klasa klasa = klasaService.findKlasaByName("1a");
+
+	}
+
+	private void testUtworzeniaKlasy(OsobaService osobaService, KlasaService klasaService) {
+		int id = 2;
+
+		Nauczyciel nauczyciel = (Nauczyciel) osobaService.findOsobaById(id);
+		Klasa klasa = new Klasa("1a");
+		klasaService.dodajKlase(klasa, nauczyciel);
+	}
+
+	private void testUtworzeniaNauczyciela(BudzetService budzetService, OsobaService osobaService) {
+
+		int id = 2;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+		//osobaService.dodajUzytkownika(nauczyciel);
+		osobaService.dodajNauczyciela(new Nauczyciel("57829485748", "Donald", "Tusk", "donald57@gmail.com", LocalDate.parse("1957-06-06", formatter)));
+	}
+
+	public void testTransakcji(BudzetService budzetService) throws Exception {
 		int id = 1;
-		Budzet budzet = budzetDAO.findBudzetById(id);
-		Transakcja transakcja = new Transakcja("PRZYCHÓD", 500000.0, LocalDate.now(), LocalTime.now(), "Dofinansowanie z budżetu państwa");
+		Budzet budzet = budzetService.findBudzetById(id);
+		//Transakcja transakcja = new Transakcja("WYDATEK", 20000.0, LocalDate.now(), LocalTime.now(), "Malowanie pomieszczeń");
 		//budzetService.dodajTransakcjeDoBudzetu(budzet, transakcja);
-		List<Transakcja> listaTransakcji = budzetDAO.findTransactionsByBudzetId(id);
-		budzet.setListaTransakcji(listaTransakcji);
-		transakcja.setBudzet(budzet);
-		budzet.dodajTransakcje(transakcja);
-		budzetDAO.update(budzet);
+		budzetService.znajdzListeTransakcjiBudzetu(budzet);
+
+		for(Transakcja transakcja : budzet.getListaTransakcji())
+			System.out.println(transakcja);
+
+
 	}
 }

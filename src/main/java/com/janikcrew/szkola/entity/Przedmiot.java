@@ -11,9 +11,13 @@ public class Przedmiot {
     @Column(name="id")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_nauczyciela")
     private Nauczyciel prowadzacy;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name="nazwa_klasy")
+    private Klasa klasa;
 
     @Column(name="nazwa")
     private String nazwa;
@@ -21,7 +25,9 @@ public class Przedmiot {
     public Przedmiot() {
 
     }
-
+    public Przedmiot(String nazwa) {
+        this.nazwa = nazwa;
+    }
     public Przedmiot(String nazwa, Nauczyciel prowadzacy) {
         this.prowadzacy = prowadzacy;
         this.nazwa = nazwa;
@@ -51,7 +57,15 @@ public class Przedmiot {
         this.nazwa = nazwa;
     }
 
-    @Override
+    public Klasa getKlasa() {
+        return klasa;
+    }
+
+    public void setKlasa(Klasa klasa) {
+        this.klasa = klasa;
+    }
+
+    /*@Override
     public String toString() {
         return "Przedmiot{" +
                 "id=" + id +
@@ -59,4 +73,6 @@ public class Przedmiot {
                 ", nazwa='" + nazwa + '\'' +
                 '}';
     }
+
+     */
 }

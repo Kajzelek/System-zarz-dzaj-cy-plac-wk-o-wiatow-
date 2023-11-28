@@ -19,13 +19,41 @@ public class BudzetServiceImpl implements BudzetService {
     }
 
     @Override
+    public void dodajBudzet(Budzet budzet) {
+        budzetDAO.save(budzet);
+    }
+
+    @Override
     public void dodajTransakcjeDoBudzetu(Budzet budzet, Transakcja transakcja) throws Exception {
+
+        budzetDAO.save(transakcja);
+        transakcja.setBudzet(budzet);
+
+        double newBudzet;
+
+        if (transakcja.getRodzaj().equals("WYDATEK")) {
+            if (transakcja.getKwota() <= budzet.getBudzet()) {
+                newBudzet = budzet.getBudzet() - transakcja.getKwota();
+                System.out.println("Transakcja typu WYDATEK w wysokości: " + transakcja.getKwota());
+            }
+            else {
+                throw new Exception("Brak odpowiednich środków na koncie! ");
+            }
+        }
+        else {
+            newBudzet = budzet.getBudzet() + transakcja.getKwota();
+            System.out.println("Transakcja typu PRZYCHÓD w wysokości: " + transakcja.getKwota());
+        }
+        budzet.setBudzet(newBudzet);
+        budzetDAO.update(transakcja);
+        budzetDAO.update(budzet);
+    }
+
+    @Override
+    public void znajdzListeTransakcjiBudzetu(Budzet budzet) {
         int id = budzet.getId();
         List<Transakcja> listaTransakcji = budzetDAO.findTransactionsByBudzetId(id);
         budzet.setListaTransakcji(listaTransakcji);
-        budzet.dodajTransakcje(transakcja);
-        transakcja.setBudzet(budzet);
-        budzetDAO.update(budzet);
     }
 
     @Override
