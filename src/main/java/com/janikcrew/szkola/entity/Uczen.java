@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("UCZEN")
@@ -16,6 +17,10 @@ public class Uczen extends Osoba {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="id_rodzica")
     private Rodzic rodzic;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_ucznia")
+    private List<Uwaga> uwagiWystawione;
 
     public Uczen() {
 
@@ -48,6 +53,14 @@ public class Uczen extends Osoba {
 
     public void setRodzic(Rodzic rodzic) {
         this.rodzic = rodzic;
+    }
+
+    public List<Uwaga> getUwagiWystawione() {
+        return uwagiWystawione;
+    }
+
+    public void setUwagiWystawione(List<Uwaga> uwagiWystawione) {
+        this.uwagiWystawione = uwagiWystawione;
     }
 
     @Override

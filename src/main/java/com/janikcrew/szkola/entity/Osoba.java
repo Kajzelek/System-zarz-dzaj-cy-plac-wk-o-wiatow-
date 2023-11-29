@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
-
+import java.util.List;
 
 
 @Entity(name="osoba")
@@ -34,6 +34,14 @@ public abstract class Osoba {
 
     @Column(name="data_uro")
     private LocalDate dataUrodzenia;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_odbiorcy")
+    private List<Wiadomosc> wiadomosciOdebrane;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_nadawcy")
+    private List<Wiadomosc> wiadomosciWyslane;
 
     public Osoba() {
 
@@ -101,6 +109,22 @@ public abstract class Osoba {
 
     public void setDataUrodzenia(LocalDate dataUrodzenia) {
         this.dataUrodzenia = dataUrodzenia;
+    }
+
+    public List<Wiadomosc> getWiadomosciOdebrane() {
+        return wiadomosciOdebrane;
+    }
+
+    public void setWiadomosciOdebrane(List<Wiadomosc> wiadomosciOdebrane) {
+        this.wiadomosciOdebrane = wiadomosciOdebrane;
+    }
+
+    public List<Wiadomosc> getWiadomosciWyslane() {
+        return wiadomosciWyslane;
+    }
+
+    public void setWiadomosciWyslane(List<Wiadomosc> wiadomosciWyslane) {
+        this.wiadomosciWyslane = wiadomosciWyslane;
     }
 
     @Override

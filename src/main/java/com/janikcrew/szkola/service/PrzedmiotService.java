@@ -6,5 +6,6 @@ import com.janikcrew.szkola.entity.Przedmiot;
 
 public interface PrzedmiotService {
     void dodajPrzedmiot(Przedmiot przedmiot, Nauczyciel prowadzacy, Klasa klasa);
+    Przedmiot findPrzedmiotById(int id);
     void deletePrzedmiotById(int id);
 }

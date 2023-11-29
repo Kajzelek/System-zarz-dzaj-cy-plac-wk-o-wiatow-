@@ -15,9 +15,13 @@ public class Nauczyciel extends Osoba {
     private Klasa klasaPodOpieka;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-            CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.EAGER)
+            CascadeType.DETACH}, fetch = FetchType.EAGER)
     @JoinColumn(name="id_nauczyciela")
     private List<Przedmiot> listaPrzedmiotow;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_nauczyciela")
+    private List<Uwaga> uwagiWystawione;
 
     public Nauczyciel() {
 
@@ -54,7 +58,14 @@ public class Nauczyciel extends Osoba {
         this.listaPrzedmiotow = listaPrzedmiotow;
     }
 
-   /* @Override
+    public List<Uwaga> getUwagiWystawione() {
+        return uwagiWystawione;
+    }
+
+    public void setUwagiWystawione(List<Uwaga> uwagiWystawione) {
+        this.uwagiWystawione = uwagiWystawione;
+    }
+    /* @Override
     public String toString() {
         return "Nauczyciel{" +
                 "klasaPodOpieką=" + klasaPodOpieka +

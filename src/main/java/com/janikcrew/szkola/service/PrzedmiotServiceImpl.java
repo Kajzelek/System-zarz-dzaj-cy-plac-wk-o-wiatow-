@@ -27,26 +27,15 @@ public class PrzedmiotServiceImpl implements PrzedmiotService {
 
     @Override
     public void dodajPrzedmiot(Przedmiot przedmiot, Nauczyciel prowadzacy, Klasa klasa) {
-        // jezeli prowadzący jest wychowawcą klasy to nie da się powiązać klasy do przedmiotu
-        /*
-        if (klasa.getWychowawca() == prowadzacy) {
-            przedmiotDAO.save(przedmiot);
-            przedmiot.setProwadzacy(prowadzacy);
-            przedmiot.setKlasa(klasa);
-            przedmiotDAO.update(przedmiot);
-        }
-        else {
-            przedmiotDAO.save(przedmiot);
-            przedmiot.setProwadzacy(prowadzacy);
-            przedmiot.setKlasa(klasa);
-            przedmiotDAO.update(przedmiot);
-        }
-        */
         przedmiotDAO.save(przedmiot);
         przedmiot.setProwadzacy(prowadzacy);
         przedmiot.setKlasa(klasa);
         przedmiotDAO.update(przedmiot);
+    }
 
+    @Override
+    public Przedmiot findPrzedmiotById(int id) {
+        return przedmiotDAO.findPrzedmiotById(id);
     }
 
     @Override
