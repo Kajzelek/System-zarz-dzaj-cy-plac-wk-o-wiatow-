@@ -30,7 +30,8 @@ public class DemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(BudzetService budzetService, OsobaService osobaService,
 											   KlasaService klasaService, PrzedmiotService przedmiotService,
-											   WiadomoscService wiadomoscService, UwagaService uwagaService) {
+											   WiadomoscService wiadomoscService, UwagaService uwagaService,
+											   AdminService adminService, GodzinaLekcyjnaService godzinaLekcyjnaService) {
 		return runner -> {
 			//utworzOsobe(osobaService);
 			//testTransakcji(budzetService);
@@ -42,8 +43,35 @@ public class DemoApplication {
 			//testUsunieciaPrzedmiotu(przedmiotService);
 			//testDzialaniaKlasy(przedmiotService, osobaService, klasaService);
 			//testUtworzeniaWiadomosci(wiadomoscService, osobaService);
-			utworzUwage(uwagaService, osobaService);
+			//utworzUwage(uwagaService, osobaService);
+			//testUtworzeniaKalendarza(adminService);
+			//testUtworzeniaGodzinyLekcyjnej(godzinaLekcyjnaService, osobaService, przedmiotService, klasaService);
+			//testDodaniaZastepstwa(godzinaLekcyjnaService, osobaService);
+			testDodaniaZdarzenia(godzinaLekcyjnaService);
 		};
+	}
+
+	private void testDodaniaZdarzenia(GodzinaLekcyjnaService godzinaLekcyjnaService) {
+		String zdarzenie = "Klasowe wyjście do kina";
+		godzinaLekcyjnaService.dodajZdarzenieDoGodzinyLekcyjnej(16, zdarzenie);
+	}
+
+	private void testDodaniaZastepstwa(GodzinaLekcyjnaService godzinaLekcyjnaService, OsobaService osobaService) {
+		godzinaLekcyjnaService.dodajZastepstwoDoGodzinyLekcyjnej(16, 2);
+	}
+
+	private void testUtworzeniaGodzinyLekcyjnej(GodzinaLekcyjnaService godzinaLekcyjnaService, OsobaService osobaService, PrzedmiotService przedmiotService, KlasaService klasaService) {
+		Nauczyciel nauczyciel = (Nauczyciel) osobaService.findOsobaById(7);
+		Przedmiot przedmiot = przedmiotService.findPrzedmiotById(3);
+		Klasa klasa = klasaService.findKlasaByName("1a");
+		String dzien = "poniedziałek";
+		String godzRozpoczecia = "08:00:00";
+		String dataRozpoczecia = "2023-09-04";
+		godzinaLekcyjnaService.dodajGodzinaLekcyjnaDoPlanuLekcji(przedmiot, klasa, dzien, godzRozpoczecia, dataRozpoczecia);
+	}
+
+	private void testUtworzeniaKalendarza(AdminService adminService) {
+		adminService.utworzKalendarzNaRokSzkolny();
 	}
 
 	private void utworzUwage(UwagaService uwagaService, OsobaService osobaService) {

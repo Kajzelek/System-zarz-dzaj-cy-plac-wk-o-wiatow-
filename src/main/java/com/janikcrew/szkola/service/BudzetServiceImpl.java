@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class BudzetServiceImpl implements BudzetService {
-    private BudzetDAO budzetDAO;
+    private final BudzetDAO budzetDAO;
 
     @Autowired
     public BudzetServiceImpl(BudzetDAO budzetDAO) {
