@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
+import java.util.ArrayList;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -31,4 +32,13 @@ public class AdminServiceImpl implements AdminService {
             monthValue = data.getMonthValue();
         }
     }
+
+    @Override
+    public void wyczyscKalendarz() {
+        ArrayList<Dzien> kalendarz = (ArrayList<Dzien>) kalendarzDAO.getKalendarz();
+        for (Dzien dzien : kalendarz) {
+            kalendarzDAO.deleteDzienByDate(dzien.getData());
+        }
+    }
+
 }

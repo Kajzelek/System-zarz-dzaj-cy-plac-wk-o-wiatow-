@@ -31,7 +31,8 @@ public class DemoApplication {
 	public CommandLineRunner commandLineRunner(BudzetService budzetService, OsobaService osobaService,
 											   KlasaService klasaService, PrzedmiotService przedmiotService,
 											   WiadomoscService wiadomoscService, UwagaService uwagaService,
-											   AdminService adminService, GodzinaLekcyjnaService godzinaLekcyjnaService) {
+											   AdminService adminService, GodzinaLekcyjnaService godzinaLekcyjnaService,
+											   MiejsceService miejsceService, DyzurService dyzurService) {
 		return runner -> {
 			//utworzOsobe(osobaService);
 			//testTransakcji(budzetService);
@@ -45,10 +46,46 @@ public class DemoApplication {
 			//testUtworzeniaWiadomosci(wiadomoscService, osobaService);
 			//utworzUwage(uwagaService, osobaService);
 			//testUtworzeniaKalendarza(adminService);
-			//testUtworzeniaGodzinyLekcyjnej(godzinaLekcyjnaService, osobaService, przedmiotService, klasaService);
+			//testUsunieciaKalendarza(adminService);
+			//testUtworzeniaGodzinyLekcyjnej(godzinaLekcyjnaService, osobaService, przedmiotService, klasaService, miejsceService);
+			//testUsunieciaGodzinyLekcyjnej(godzinaLekcyjnaService);
 			//testDodaniaZastepstwa(godzinaLekcyjnaService, osobaService);
-			testDodaniaZdarzenia(godzinaLekcyjnaService);
+			//testDodaniaZastepujacejSali(miejsceService, godzinaLekcyjnaService);
+			//testDodaniaZdarzenia(godzinaLekcyjnaService);
+			//testDodaniaMiejsca(miejsceService);
+			//testModyfikacjiNazwySali(miejsceService);
+			testUtworzeniaDyzuru(dyzurService);
+
 		};
+	}
+
+	private void testUtworzeniaDyzuru(DyzurService dyzurService) {
+	}
+
+	private void testUsunieciaKalendarza(AdminService adminService) {
+		adminService.wyczyscKalendarz();
+	}
+
+	private void testDodaniaZastepujacejSali(MiejsceService miejsceService, GodzinaLekcyjnaService godzinaLekcyjnaService) {
+		int idGodzinyLekcyjnej = 15;
+		int idSaliZastepujacej = 5;
+		godzinaLekcyjnaService.dodajZastepujacaSale(idGodzinyLekcyjnej, idSaliZastepujacej);
+	}
+
+	private void testModyfikacjiNazwySali(MiejsceService miejsceService) {
+		String staraNazwa = "Sala Gimnastyczna nr 21";
+		String nowaNazwa = "Sala gimnastyczna nr 21";
+		miejsceService.aktualizujMiejsce(staraNazwa, nowaNazwa);
+	}
+
+	private void testDodaniaMiejsca(MiejsceService miejsceService) {
+		String miejsce = "Sala nr 1";
+ 		miejsceService.dodajMiejsce(miejsce);
+	}
+
+	private void testUsunieciaGodzinyLekcyjnej(GodzinaLekcyjnaService godzinaLekcyjnaService) {
+		int idPrzedmiotu = 3;
+		godzinaLekcyjnaService.usunGodzineZPlanuByIdPrzedmiotu(idPrzedmiotu);
 	}
 
 	private void testDodaniaZdarzenia(GodzinaLekcyjnaService godzinaLekcyjnaService) {
@@ -60,14 +97,15 @@ public class DemoApplication {
 		godzinaLekcyjnaService.dodajZastepstwoDoGodzinyLekcyjnej(16, 2);
 	}
 
-	private void testUtworzeniaGodzinyLekcyjnej(GodzinaLekcyjnaService godzinaLekcyjnaService, OsobaService osobaService, PrzedmiotService przedmiotService, KlasaService klasaService) {
+	private void testUtworzeniaGodzinyLekcyjnej(GodzinaLekcyjnaService godzinaLekcyjnaService, OsobaService osobaService, PrzedmiotService przedmiotService, KlasaService klasaService, MiejsceService miejsceService) {
 		Nauczyciel nauczyciel = (Nauczyciel) osobaService.findOsobaById(7);
 		Przedmiot przedmiot = przedmiotService.findPrzedmiotById(3);
 		Klasa klasa = klasaService.findKlasaByName("1a");
+		Miejsce miejsce = miejsceService.findMiejsceById(1);
 		String dzien = "poniedziałek";
 		String godzRozpoczecia = "08:00:00";
 		String dataRozpoczecia = "2023-09-04";
-		godzinaLekcyjnaService.dodajGodzinaLekcyjnaDoPlanuLekcji(przedmiot, klasa, dzien, godzRozpoczecia, dataRozpoczecia);
+		godzinaLekcyjnaService.dodajGodzinaLekcyjnaDoPlanuLekcji(przedmiot, klasa, miejsce, dzien, godzRozpoczecia, dataRozpoczecia);
 	}
 
 	private void testUtworzeniaKalendarza(AdminService adminService) {
@@ -137,7 +175,6 @@ public class DemoApplication {
 		Klasa klasa = klasaService.findKlasaByName("1a");
 		osobaService.dodajRodzicaUcznia(rodzic, uczen);
 		klasaService.dodajUcznia(klasa, uczen);
-
 
 	}
 

@@ -14,23 +14,31 @@ public class GodzinaLekcyjna {
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_nauczyciela")
     private Nauczyciel prowadzacy;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_nauczyciela_zastepujacego")
     private Nauczyciel nauczycielZastepujacy;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_miejsca")
+    private Miejsce miejsce;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_miejsca_zastepujacego")
+    private Miejsce miejsceZastepujace;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "data")
     private Dzien dzien;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "nazwa_klasy")
     private Klasa klasa;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_przedmiotu")
     private Przedmiot przedmiot;
 
@@ -129,6 +137,22 @@ public class GodzinaLekcyjna {
 
     public void setZdarzenie(String zdarzenie) {
         this.zdarzenie = zdarzenie;
+    }
+
+    public Miejsce getMiejsce() {
+        return miejsce;
+    }
+
+    public void setMiejsce(Miejsce miejsce) {
+        this.miejsce = miejsce;
+    }
+
+    public Miejsce getMiejsceZastepujace() {
+        return miejsceZastepujace;
+    }
+
+    public void setMiejsceZastepujace(Miejsce miejsceZastepujace) {
+        this.miejsceZastepujace = miejsceZastepujace;
     }
 
     @Override

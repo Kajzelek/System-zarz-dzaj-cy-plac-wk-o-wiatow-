@@ -1,6 +1,7 @@
 package com.janikcrew.szkola.dao;
 
 import com.janikcrew.szkola.entity.GodzinaLekcyjna;
+import com.janikcrew.szkola.entity.Przedmiot;
 import com.janikcrew.szkola.entity.Wiadomosc;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -28,6 +29,28 @@ public class GodzinaLekcyjnaDAOImpl implements GodzinaLekcyjnaDAO {
     public List<GodzinaLekcyjna> getListOfGodzinaLekcyjnaByKlasaName(String name) {
         TypedQuery<GodzinaLekcyjna> query = entityManager.createQuery("from GodzinaLekcyjna where klasa.nazwa = :data", GodzinaLekcyjna.class);
         query.setParameter("data", name);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<GodzinaLekcyjna> getListOfGodzinaLekcyjnaByNauczycielId(int id) {
+        TypedQuery<GodzinaLekcyjna> query = entityManager.createQuery("from GodzinaLekcyjna where nauczyciel.id = :data " +
+                " or nauczycielZastepujacy.id = :data", GodzinaLekcyjna.class);
+        query.setParameter("data", id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<GodzinaLekcyjna> getListOfGodzinaLekcyjnaByPrzedmiotId(int id) {
+        TypedQuery<GodzinaLekcyjna> query = entityManager.createQuery("from GodzinaLekcyjna where przedmiot.id = :data", GodzinaLekcyjna.class);
+        query.setParameter("data", id);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<GodzinaLekcyjna> getListOfGodzinaLekcyjnaByMiejsceId(int id) {
+        TypedQuery<GodzinaLekcyjna> query = entityManager.createQuery("from GodzinaLekcyjna where miejsce.id = :data", GodzinaLekcyjna.class);
+        query.setParameter("data", id);
         return query.getResultList();
     }
 
